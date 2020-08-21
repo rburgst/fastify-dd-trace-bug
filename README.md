@@ -1,33 +1,40 @@
-# Fastify & Typescript App
+# DD-trace with fastify3 problem repo
 
 ## Description
 
-Fastify & TypeScript starter repository.
+Sample repo demonstrating a problem where dd-trace negatively interferes with fastify3.
 
 ## Installation
 
 ```bash
-$ git clone https://github.com/Matschik/fastify-typescript-starter.git
-$ cd fastify-typescript-starter
-$ npm install
-$ rm -rf .git # Remove repository's git directory
+$ yarn install
+$ yarn dev
 ```
 
-## Usage
+## expected
 
-```bash
-# development: hot reload with nodemon
-$ npm run dev
+Fastify should boot up just as usual
 
-# debug
-$ npm run debug
+## Actual
 
-# format with prettier
-$ npm run format
+dd-trace patches fastify so that it no longer works
 
-# build for production
-$ npm run build
+```
+init tracer
+creating fastify
 
-# production
-$ npm run prod
+/Users/rainer/git/fastify-dd-trace-bug/src/app.ts:7
+const app = fastify();
+                   ^
+TypeError: fastify_1.default is not a function
+    at Object.<anonymous> (/Users/rainer/git/fastify-dd-trace-bug/src/app.ts:7:20)
+    at Module._compile (internal/modules/cjs/loader.js:956:30)
+    at Module.m._compile (/Users/rainer/git/fastify-dd-trace-bug/node_modules/ts-node/src/index.ts:858:23)
+    at Module._extensions..js (internal/modules/cjs/loader.js:973:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/rainer/git/fastify-dd-trace-bug/node_modules/ts-node/src/index.ts:861:12)
+    at Module.load (internal/modules/cjs/loader.js:812:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:724:14)
+    at Module.require (internal/modules/cjs/loader.js:849:19)
+    at Module.require (/Users/rainer/git/fastify-dd-trace-bug/node_modules/require-in-the-middle/index.js:43:24)
+    at require (internal/modules/cjs/helpers.js:74:18)
 ```
