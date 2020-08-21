@@ -1,17 +1,10 @@
-import * as fastify from "fastify";
+import fastify, { FastifyInstance, FastifyHttp2SecureOptions } from "fastify";
 import { Server, IncomingMessage, ServerResponse } from "http";
 import router from "./router";
+import { Http2SecureServer } from "http2";
 
-const serverOptions: fastify.ServerOptions = {
-  // Logger only for production
-  logger: !!(process.env.NODE_ENV !== "development")
-};
-
-const app: fastify.FastifyInstance<
-  Server,
-  IncomingMessage,
-  ServerResponse
-> = fastify(serverOptions);
+console.log("creating fastify");
+const app = fastify();
 
 // Middleware: Router
 app.register(router);
